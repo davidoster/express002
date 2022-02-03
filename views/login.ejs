@@ -5,11 +5,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %>></title>
+    <title><%= title %></title>
 </head>
 
 <body>
-    <form action="/login" method="POST">
+    <h3><%= message %></h3>
+    <form action="/auth/login" method="POST">
         Username: <input type="text" name="username" title="username" /><br />
         Password: <input type="password" name="password" title="password" /><br />
         <button type="submit">Login</button>

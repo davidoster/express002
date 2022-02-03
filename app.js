@@ -8,7 +8,7 @@ var logger = require('morgan');
 // our ears - get the requests
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var loginController = require('./routes/login');
+var authController = require('./routes/auth');
 
 var app = express();
 
@@ -33,7 +33,7 @@ app.use('/', indexRouter); // <-- this means that the indexRouter responds to ht
 
 // GET http://localhost:4000/users
 app.use('/users', usersRouter); // userRouter responds to http://localhost:4000/users
-app.use('/login', loginController); // loginController responds to http://localhost:4000/login
+app.use('/auth', authController); // authController responds to http://localhost:4000/auth/login
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
