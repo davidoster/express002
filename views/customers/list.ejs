@@ -7,12 +7,12 @@
     <title><%= title %></title>
 </head>
 <body>
-    <ol>
+    <ul>
         <% for(var i = 0; i < list.length; i++) { %>
             <li>
-                <%= `Id: ${list[i].id}\tName: ${list[i].name}` %>
+                <%= `Id: ${list[i].id}\tFirst Name: ${list[i].firstName}\tLast Name: ${list[i].lastName} ` %>
             </li>
         <% } %>
-    </ol>
+    </ul>
 </body>
 </html>
