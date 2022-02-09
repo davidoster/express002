@@ -10,7 +10,8 @@
     <ul>
         <% for(var i = 0; i < list.length; i++) { %>
             <li>
-                <%= `Id: ${list[i].id}\tFirst Name: ${list[i].firstName}\tLast Name: ${list[i].lastName} ` %>
+                <%= `Id: ${list[i].id}\tFirst Name: ${list[i].firstName}\tLast Name: ${list[i].lastName} ` %>&nbsp;
+                <a href="/customers/delete?id=3">Delete</a>
             </li>
         <% } %>
     </ul>

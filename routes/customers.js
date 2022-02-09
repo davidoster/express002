@@ -16,6 +16,20 @@ router.get('/', async function (req, res) {
         });
 });
 
+// /customer/delete
+router.get('/delete', async function (req, res) {
+    // let customers = await getCustomers();
+    // let customers = await TestCustomer.findAll();
+    // console.log(customers);
+    await TestCustomer.destroy(req.query.id);
+    res.render('customers/deleted',
+        {
+            title: 'Express 002 - Customers delete page',
+            // list: getCustomers()
+            message: `You deleted customer with id: ${req.query.id}`
+        });
+});
+
 
 async function getCustomers() {
     try {

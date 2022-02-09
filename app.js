@@ -36,6 +36,10 @@ app.use('/', indexRouter); // <-- this means that the indexRouter responds to ht
 app.use('/users', usersRouter); // userRouter responds to http://localhost:4000/users
 app.use('/auth', authController); // authController responds to http://localhost:4000/auth/login
 app.use('/customers', customersController);
+// /koukou main url
+// /users/list
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
