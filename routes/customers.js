@@ -4,6 +4,7 @@ const TestCustomer = db.sequelize.models.TestCustomer; // Model TestCustomer
 var express = require('express');
 var router = express.Router();
 
+// list
 router.get('/', async function (req, res) {
     // let customers = await getCustomers();
     let customers = await TestCustomer.findAll();
@@ -15,6 +16,28 @@ router.get('/', async function (req, res) {
             list: customers
         });
 });
+
+// GET create
+router.get('/create', (req, res) => {
+    res.render('customers/create', {
+        title: 'Express 002 - New Customer page',
+        message: 'New Customer'
+    });
+})
+
+// POST create 
+router.post('/create', async (req, res) => {
+    await TestCustomer.create({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email
+    });
+    res.redirect('/customers');
+});
+
+// npx sequelize model:generate --name TestCustomer --attributes firstName:string,lastName:string,email:string
+// npx sequelize db:migrate
+
 
 // /customer/delete
 router.get('/delete', async function (req, res) {
