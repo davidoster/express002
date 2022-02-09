@@ -21,7 +21,7 @@ router.get('/delete', async function (req, res) {
     // let customers = await getCustomers();
     // let customers = await TestCustomer.findAll();
     // console.log(customers);
-    await TestCustomer.destroy(req.query.id);
+    await TestCustomer.destroy({where: { id: req.query.id } });
     res.render('customers/deleted',
         {
             title: 'Express 002 - Customers delete page',
