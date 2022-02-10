@@ -2,6 +2,7 @@ let mysql = require("mysql2");
 const db = require('../models/index'); // eqiuivalent mysql
 const TestCustomer = db.sequelize.models.TestCustomer; // Model TestCustomer
 var express = require('express');
+const testcustomer = require("../models/testcustomer");
 var router = express.Router();
 
 // list
@@ -19,9 +20,11 @@ router.get('/', async function (req, res) {
 
 // GET create
 router.get('/create', (req, res) => {
-    res.render('customers/create', {
+    res.render('customers/create-update', {
         title: 'Express 002 - New Customer page',
-        message: 'New Customer'
+        message: 'New Customer',
+        action: 'create',
+        customer: {}
     });
 })
 
@@ -35,12 +38,40 @@ router.post('/create', async (req, res) => {
     res.redirect('/customers');
 });
 
+// GET update
+router.get('/edit/:id', async (req, res) => {
+    let customer = await TestCustomer.findByPk(req.params.id);
+    console.log(customer);
+    res.render('customers/create-update', {
+        title: 'Express 002 - Edit Customer page',
+        message: 'Edit a Customer',
+        action: 'update',
+        customer: customer
+    });
+})
+
+// POST update 
+router.post('/update', async (req, res) => {
+    let customer = await TestCustomer.findByPk(req.body.id);
+    if(customer.id == req.body.id) {
+        customer.firstName = req.body.firstName;
+        customer.lastName = req.body.lastName;
+        customer.email = req.body.email;
+        await customer.save();
+    }
+    res.redirect('/customers');
+})
+
 // npx sequelize model:generate --name TestCustomer --attributes firstName:string,lastName:string,email:string
 // npx sequelize db:migrate
 
 
 // /customer/delete
-router.get('/delete', async function (req, res) {
+
+// http://localhost:4000/customers/delete?id=1&firstName=John // req.query.id
+// http://localhost:4000/customers/delete/1/John // req.params.id
+
+router.get('/delete/:id/:firstName', async function (req, res) {
     // let customers = await getCustomers();
     // let customers = await TestCustomer.findAll();
     // console.log(customers);
