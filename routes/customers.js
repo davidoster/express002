@@ -8,7 +8,7 @@ var router = express.Router();
 // list
 router.get('/', async function (req, res) {
     // let customers = await getCustomers();
-    let customers = await TestCustomer.findAll();
+    let customers = await TestCustomer.findAll({ attributes: ['id', 'firstName', 'lastName', 'email'] });
     console.log(customers);
     res.render('customers/list',
         {
@@ -40,7 +40,7 @@ router.post('/create', async (req, res) => {
 
 // GET update
 router.get('/edit/:id', async (req, res) => {
-    let customer = await TestCustomer.findByPk(req.params.id);
+    let customer = await TestCustomer.findByPk(req.params.id, { attributes: ['id', 'firstName', 'lastName', 'email'] });
     console.log(customer);
     res.render('customers/create-update', {
         title: 'Express 002 - Edit Customer page',
@@ -52,8 +52,8 @@ router.get('/edit/:id', async (req, res) => {
 
 // POST update 
 router.post('/update', async (req, res) => {
-    let customer = await TestCustomer.findByPk(req.body.id);
-    if(customer.id == req.body.id) {
+    let customer = await TestCustomer.findByPk(req.body.id, { attributes: ['id', 'firstName', 'lastName', 'email'] });
+    if (customer.id == req.body.id) {
         customer.firstName = req.body.firstName;
         customer.lastName = req.body.lastName;
         customer.email = req.body.email;
@@ -63,25 +63,45 @@ router.post('/update', async (req, res) => {
 })
 
 // npx sequelize model:generate --name TestCustomer --attributes firstName:string,lastName:string,email:string
-// npx sequelize db:migrate
+// npx sequelize-cli db:migrate
 
+// npx sequelize model:generate --name TestProduct --attributes name:string,price:double
+// npx sequelize-cli db:migrate
+
+// npx sequelize model:generate --name TestOrder --attributes quantity:integer,totalPrice:double
+// npx sequelize-cli db:migrate
+
+// amend the customer,product,order with associations
 
 // /customer/delete
 
 // http://localhost:4000/customers/delete?id=1&firstName=John // req.query.id
 // http://localhost:4000/customers/delete/1/John // req.params.id
 
-router.get('/delete/:id/:firstName', async function (req, res) {
+router.get('/delete', async function (req, res) {
     // let customers = await getCustomers();
     // let customers = await TestCustomer.findAll();
     // console.log(customers);
-    await TestCustomer.destroy({where: { id: req.query.id } });
-    res.render('customers/deleted',
-        {
-            title: 'Express 002 - Customers delete page',
-            // list: getCustomers()
-            message: `You deleted customer with id: ${req.query.id}`
+    await TestCustomer.destroy({ where: { id: req.query.id } }).then((deleted) => {
+        if (deleted === 1) {
+            res.render('customers/deleted',
+                {
+                    title: 'Express 002 - Customers delete page',
+                    // list: getCustomers()
+                    message: `You deleted customer with id: ${req.query.id}`
+                });
+        }
+    },
+        (error) => {
+            res.render('customers/deleted',
+                {
+                    title: 'Express 002 - Customers delete page',
+                    // list: getCustomers()
+                    message: `<div><p>There was an error deleting customer with id: ${req.query.id}</p>
+                                   <p>Error: ${error}</p></div>`
+                });
         });
+
 });
 
 
@@ -91,7 +111,7 @@ async function getCustomers() {
         if (dbResult) {
             return (dbResult);
         }
-    } 
+    }
     catch (error) {
         return (false);
     }
@@ -120,7 +140,7 @@ async function dbLogin() {
                     return (reject(error));
                 } else {
                     console.log(rows);
-                    return(resolve(rows));
+                    return (resolve(rows));
                     // if (rows.length == 1) {
                     //     pool.end();
                     //     return (resolve(true));
