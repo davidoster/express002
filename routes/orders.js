@@ -36,22 +36,27 @@ router.get('/', async function (req, res, next) {
 });
 
 // GET create
-router.get('/create', (req, res) => {
+router.get('/create', async (req, res) => {
+    let customers = await TestCustomer.findAll({ attributes: ['id', 'firstName', 'lastName'] });
+    let products =  await TestProduct.findAll({ attributes: ['id', 'name']});
     res.render('orders/create-update', {
         title: 'Express 002 - New Order page',
         message: 'New Order',
         action: 'create',
-        product: {}
+        order: {},
+        customers: customers,
+        products: products
     });
 })
 
 // POST create 
 router.post('/create', async (req, res) => {
+    let selectedProduct = await TestProduct.findByPk(req.body.products, { attributes: ['price']});
     await TestOrder.create({
-        customerId: req.body.customerId,
-        productId: req.body.productId,
+        customerId: req.body.customers,
+        productId: req.body.products,
         quantity: req.body.quantity,
-        totalPrice: 0
+        totalPrice: req.body.quantity * selectedProduct.price
     });
     res.redirect('/orders');
 });
