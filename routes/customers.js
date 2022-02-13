@@ -62,6 +62,12 @@ router.post('/update', async (req, res) => {
     res.redirect('/customers');
 })
 
+router.get('/listjson', async function (req, res) {
+    // let customers = await getCustomers();
+    let customers = await TestCustomer.findAll({ attributes: ['id', 'firstName', 'lastName', 'email'] });
+    res.json(customers);
+});
+
 // npx sequelize model:generate --name TestCustomer --attributes firstName:string,lastName:string,email:string
 // npx sequelize-cli db:migrate
 // npx sequelize-cli db:migrate:undo

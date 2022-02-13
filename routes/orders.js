@@ -61,4 +61,11 @@ router.post('/create', async (req, res) => {
     res.redirect('/orders');
 });
 
+// http://localhost:4000/orders/listjson
+router.get('/listjson', async function(req, res) {
+    let orders = await TestOrder.findAll({ attributes: ['id', 'customerId', 'productId', 'quantity', 'totalPrice'] });
+    res.json(orders);
+});
+
+
 module.exports = router;
