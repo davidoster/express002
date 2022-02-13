@@ -1,5 +1,5 @@
 let mysql = require("mysql2");
-const db = require('../models/index'); // eqiuivalent mysql
+const db = require('../models/index'); // equivalent mysql
 const TestCustomer = db.sequelize.models.TestCustomer; // Model TestCustomer
 var express = require('express');
 const testcustomer = require("../models/testcustomer");
@@ -9,7 +9,7 @@ var router = express.Router();
 router.get('/', async function (req, res) {
     // let customers = await getCustomers();
     let customers = await TestCustomer.findAll({ attributes: ['id', 'firstName', 'lastName', 'email'] });
-    console.log(customers);
+    // console.log(customers);
     res.render('customers/list',
         {
             title: 'Express 002 - Customers page',
@@ -41,7 +41,7 @@ router.post('/create', async (req, res) => {
 // GET update
 router.get('/edit/:id', async (req, res) => {
     let customer = await TestCustomer.findByPk(req.params.id, { attributes: ['id', 'firstName', 'lastName', 'email'] });
-    console.log(customer);
+    // console.log(customer);
     res.render('customers/create-update', {
         title: 'Express 002 - Edit Customer page',
         message: 'Edit a Customer',
@@ -64,6 +64,7 @@ router.post('/update', async (req, res) => {
 
 // npx sequelize model:generate --name TestCustomer --attributes firstName:string,lastName:string,email:string
 // npx sequelize-cli db:migrate
+// npx sequelize-cli db:migrate:undo
 
 // npx sequelize model:generate --name TestProduct --attributes name:string,price:double
 // npx sequelize-cli db:migrate
