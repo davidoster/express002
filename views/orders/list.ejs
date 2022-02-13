@@ -8,12 +8,21 @@
 </head>
 <body>
     <a href="/orders/create">Add New Order</a>
+    <h3><%= message %></h3>
     <ul>
         <% for(var i = 0; i < list.length; i++) { %>
             <li>
-                <%= `Id: ${list[i].id}\tCustomer Id: ${list[i].customerId}\tProduct Id: ${list[i].productId}\tQuantity: ${list[i].quantity}\tTotal Price: ${list[i].totalPrice} ` %>&nbsp;
-                <a href="/orders/edit/<%= list[i].id %>">Edit</a>
-                <a href="/orders/delete?id=<%= list[i].id %>">Delete</a>
+                <div>
+                    <p><%= `Id: ${list[i].id}` %></p>
+                    <p><%= `Customer Id: ${list[i].customer.id}, Customer Name: ${list[i].customer.name}` %></p>
+                    <p><%= `Product Id: ${list[i].product.id} Product Name: ${list[i].product.name}` %></p>
+                    <p><%= `Quantity: ${list[i].quantity}` %></p>
+                    <p><%= `Total Price: ${list[i].totalPrice}` %></p>
+                    <p>
+                        <a href="/orders/edit/<%= list[i].id %>">Edit</a>
+                        <a href="/orders/delete?id=<%= list[i].id %>">Delete</a>
+                    </p>
+                </div>
             </li>
         <% } %>
     </ul>
